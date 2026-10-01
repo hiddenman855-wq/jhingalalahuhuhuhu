@@ -1,0 +1,7 @@
+{
+  "name": "IndexHub - Directory & CMS",
+  "description": "Curated web directory and content management system for discovering and managing websites, tools, and categories.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
