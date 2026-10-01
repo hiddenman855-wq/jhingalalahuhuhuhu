@@ -6,7 +6,6 @@ import {
   ArrowRight, 
   AlertCircle, 
   Globe, 
-  Zap,
   ShieldAlert,
   Clock
 } from 'lucide-react';
@@ -56,11 +55,6 @@ export const AdminLogin: React.FC = () => {
     }
   };
 
-  const handleUseDevCredentials = () => {
-    setEmail('admin@example.com');
-    setPassword('DirectoryAdmin2026!Demo');
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-md">
@@ -107,7 +101,7 @@ export const AdminLogin: React.FC = () => {
                   type="email"
                   required
                   disabled={lockoutSeconds > 0}
-                  placeholder="admin@example.com"
+                  placeholder="name@domain.com"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-slate-100 placeholder-slate-400 focus:outline-hidden focus:border-indigo-500 disabled:opacity-50"
@@ -136,42 +130,19 @@ export const AdminLogin: React.FC = () => {
             <button
               type="submit"
               disabled={loading || lockoutSeconds > 0}
-              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-md shadow-indigo-900/30 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-md shadow-indigo-900/30 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
             >
               <span>{loading ? 'Authenticating...' : lockoutSeconds > 0 ? `Locked (${lockoutSeconds}s)` : 'Sign in to Admin'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </form>
-
-          {/* Dev helper note */}
-          <div className="p-3 bg-slate-950/70 border border-slate-800/80 rounded-xl text-xs text-slate-400 space-y-1.5">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-slate-300 flex items-center gap-1">
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                Development Credentials
-              </span>
-              <button
-                type="button"
-                onClick={handleUseDevCredentials}
-                disabled={lockoutSeconds > 0}
-                className="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold underline disabled:opacity-50"
-              >
-                Auto-fill
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              Email: <code className="text-slate-300 bg-slate-900 px-1 py-0.5 rounded">admin@example.com</code>
-              <br />
-              Password: <code className="text-slate-300 bg-slate-900 px-1 py-0.5 rounded">DirectoryAdmin2026!Demo</code>
-            </p>
-          </div>
         </div>
 
         {/* Back to Public Site */}
         <div className="text-center mt-6">
           <button
             onClick={() => navigate('/')}
-            className="text-xs text-slate-400 hover:text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+            className="text-xs text-slate-400 hover:text-slate-200 inline-flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Globe className="w-3.5 h-3.5" />
             <span>Return to Public Directory</span>
