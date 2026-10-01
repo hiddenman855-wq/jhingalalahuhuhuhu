@@ -22,6 +22,7 @@ const ALT_EMAIL = 'hiddenman855@gmail.com';
 const DEFAULT_PASS = 'DirectoryAdmin2026!Demo';
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const SESSION_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours max session
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AdminUser | null>(null);
@@ -48,14 +49,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   useEffect(() => {
-    // Check local session on load
     try {
       checkLockout();
-      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+
+      // Wipe any lingering legacy persistent session to enforce strict authentication prompt
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+
+      // Verify active tab session
+      const stored = sessionStorage.getItem(AUTH_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Verify session expiration (7 days limit)
-        if (parsed && parsed.email && (!parsed.expiresAt || parsed.expiresAt > Date.now())) {
+        if (parsed && parsed.email && parsed.expiresAt && parsed.expiresAt > Date.now()) {
           setUser({
             uid: parsed.uid || 'admin-root',
             email: parsed.email,
@@ -63,13 +67,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             isAdmin: true
           });
         } else {
-          // Session expired
-          localStorage.removeItem(AUTH_STORAGE_KEY);
+          sessionStorage.removeItem(AUTH_STORAGE_KEY);
           setUser(null);
         }
+      } else {
+        setUser(null);
       }
     } catch (e) {
       console.error('Failed reading session:', e);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -130,10 +136,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       displayName: 'Administrator',
       isAdmin: true,
       token,
-      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days
+      expiresAt: Date.now() + SESSION_DURATION_MS
     };
 
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(adminUser));
+    // Store strictly in sessionStorage so closing the tab or browser locks the admin panel
+    sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(adminUser));
     setUser({
       uid: adminUser.uid,
       email: adminUser.email,
@@ -143,6 +150,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = async () => {
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
     localStorage.removeItem(AUTH_STORAGE_KEY);
     setUser(null);
   };

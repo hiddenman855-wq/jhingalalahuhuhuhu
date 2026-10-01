@@ -28,7 +28,7 @@ export async function logActivity(action: string, entityType: ActivityLog['entit
   try {
     let adminEmail = 'admin@example.com';
     try {
-      const stored = localStorage.getItem('ih_admin_session');
+      const stored = sessionStorage.getItem('ih_admin_session') || localStorage.getItem('ih_admin_session');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed?.email) adminEmail = parsed.email;

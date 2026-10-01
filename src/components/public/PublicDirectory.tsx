@@ -120,11 +120,11 @@ export const PublicDirectory: React.FC = () => {
           {/* Right Header Navigation - Only Admin CMS */}
           <div className="flex items-center gap-2.5">
             <button
-              onClick={() => navigate('/admin')}
-              className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-indigo-900/30 transition-colors"
+              onClick={() => navigate('/admin/login')}
+              className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-indigo-900/30 transition-colors cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin CMS</span>
+              <span>Admin Login</span>
             </button>
           </div>
         </div>
@@ -389,11 +389,11 @@ export const PublicDirectory: React.FC = () => {
 
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate('/admin')}
-              className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors flex items-center gap-1.5"
+              onClick={() => navigate('/admin/login')}
+              className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              Admin Dashboard
+              Admin Login
             </button>
           </div>
         </div>
